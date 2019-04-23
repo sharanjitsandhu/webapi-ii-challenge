@@ -6,7 +6,7 @@ const router = express.Router();
 const db = require("../data/db.js");
 
 //  Returns an array of all the posts objects contained in the database.
-router.get("", (req, res) => {
+router.get("/", (req, res) => {
   db.find()
     .then(posts => {
       res.status(200).json(posts);
@@ -21,9 +21,10 @@ router.get("", (req, res) => {
 //  Returns the post object with the specified id.
 router.get("/:id", (req, res) => {
   const id = req.params.id;
+
   db.findById(id)
     .then(post => {
-      if (post) {
+      if (post[0]) {
         res.json(post);
       } else {
         res
@@ -64,6 +65,7 @@ router.post("/", (req, res) => {
 //  Removes the post with the specified id and returns the deleted post object.
 router.delete("/:id", (req, res) => {
   const postId = req.params.id; //req.params has the URL parameters
+
   db.remove(postId)
     .then(removed => {
       if (removed) {
